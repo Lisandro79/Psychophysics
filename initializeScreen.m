@@ -1,11 +1,8 @@
-function Exp = InitializeScreen (Exp)
+function Exp = initializeScreen (Exp)
 
 
 %% DEFINE ALL THE DEFAULTS
 % Exp.Gral.randomize= [];
-if ~isfield(Exp, 'Gral'), Exp.Gral = []; else end;
-if ~isfield(Exp.Gral, 'randomize'), Exp.Gral.randomize = 0; else end; % Do not randomize by default
-if ~isfield(Exp.Gral, 'SubjectName'), Exp.Gral.SubjectName = 'noSubject'; else end;
 if ~isfield(Exp.Cfg, 'SkipSyncTest'), Exp.Cfg.SkipSyncTest = 0; else end;
 if ~isfield(Exp.Cfg, 'AuxBuffers'), Exp.Cfg.AuxBuffers = 1; else end;
 if ~isfield(Exp.Cfg, 'WinSize'), Exp.Cfg.WinSize = []; else end; % full screen
