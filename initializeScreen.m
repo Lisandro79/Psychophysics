@@ -16,9 +16,9 @@ if ~isfield(Exp.Cfg, 'WinColor'), Exp.Cfg.WinColor = []; else end; % gray backgr
 % 9 == Blue-Red
 if ~isfield(Exp.Cfg, 'stereoMode'), Exp.Cfg.stereoMode= 0; else end; % no stereomode
 if ~isfield(Exp.Cfg, 'adjustColorGains'), Exp.Cfg.adjustColorGains = 0; else end; % no adjust
-if ~isfield(Exp.Cfg, 'xDimCm'), disp('xDimCm missing'), return; else end; %Length in cm of the screen in X
-if ~isfield(Exp.Cfg, 'yDimCm'), disp('yDimCm missing'), return; else end; %Length in cm of the screen in Y
-if ~isfield(Exp.Cfg, 'distanceCm'), disp('distanceCm missing'), return; else end; %Viewing distance
+if ~isfield(Exp.Cfg, 'xDimCm'), Exp.Cfg.xDimCm=30; else end; %Length in cm of the screen in X
+if ~isfield(Exp.Cfg, 'yDimCm'), Exp.Cfg.yDimCm=20; else end; %Length in cm of the screen in Y
+if ~isfield(Exp.Cfg, 'distanceCm'), Exp.Cfg.distanceCm=60; else end; %Viewing distance
 
 
 %% GENERAL PARAMETERS FOR SCREEN
@@ -45,7 +45,9 @@ Exp.Cfg.Color.inc= Exp.Cfg.Color.white - Exp.Cfg.Color.gray;
 if isempty(Exp.Cfg.WinColor)
     Exp.Cfg.WinColor= Exp.Cfg.Color.gray;
 end
-
+[x y]=Screen('DisplaySize',Exp.Cfg.screenNumber);
+Exp.Cfg.xDimCm=x/10;
+Exp.Cfg.yDimCm=y/10;
 %% OPEN A WINDOW DEPENDING ON THE STEREO MODE
 if Exp.Cfg.stereoMode==0 %No stereo mode, one display only
     [Exp.Cfg.win Exp.Cfg.windowRect]= Screen('OpenWindow', 0 , Exp.Cfg.WinColor, Exp.Cfg.WinSize, [], 2, 0);
