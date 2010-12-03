@@ -14,3 +14,4 @@ initializeScreen. File to open the first screen and to initialize basic paramete
 tr2trParams. File that reads a .txt file and extracts the information of the values of the parameters that change from trial to trial
 Leonidas. The main file for running the experiment. Should not be changed.
 
+new file for testing
