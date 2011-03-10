@@ -1,0 +1,14 @@
+function timeForLoop
+
+null= zeros(1,10000);
+times=zeros(1,10000);
+Priority(9);
+for i=1:10000; 
+	times(i)=GetSecs;
+	if i<= 5000
+       null(i)= 
+		
+end
+Priority(0);
+plot(times)
+plot(diff(times))

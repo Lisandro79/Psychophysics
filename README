@@ -9,9 +9,13 @@ Question to ask each time you add a parameter:
 Is this parameter fixed for all trials or is it changing from some trial to trial?
 
 
-gralParams. File to define all the general parameters that do not change from trial to trial and the ones that overide the default values of the script. This is also the function that calls Leonidas to run the experiment
+gralParams. File to define all the general parameters that do not change from trial to trial. Also and the ones that overide the default values of the script. 
+This is also the function that calls Leonidas to run the experiment
+
 initializeScreen. File to open the first screen and to initialize basic parameters of the experiment.
+
 tr2trParams. File that reads a .txt file and extracts the information of the values of the parameters that change from trial to trial
+
 Leonidas. The main file for running the experiment. Should not be changed.
 
-new file for testing
+

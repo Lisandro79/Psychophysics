@@ -7,7 +7,8 @@ function [Exp] = trialGenerator_Manual(inFileName)
 %Be creative...
 
 % Changes to be made:
-% We feed the function with a .txt
+% INput: We feed the function with a .txt
+
 % First row: variables names. We read the names of variables and create those variables inside Exp.Trial using the 'eval' function.
 % READ THE PARAMETERS OF THE EXPERIMENT THAT ARE CHANGING FROM TRIAL TO TRIAL AND PREALLOCATE THEM IN MEMORY 
 % Get line by line of text file
@@ -22,6 +23,18 @@ function [Exp] = trialGenerator_Manual(inFileName)
 
 
 % Third: we just read the data for each variable for each trial
+
+% Output: The Exp.Trial structure with all the variables defined in the
+% .txt in it with all the values specified in the .txt.
+
+
+%HOW TO READ A TXT FILE
+%======================
+% fid = fopen('Test.txt')
+% tline = fgetl(fid)
+% C = textscan(tline, '%s %s') %The delimiter by default is white space.
+% fclose('all')
+
 
 %--------------------------------------------------------------------------
 
@@ -157,12 +170,7 @@ fclose('all')
 %%
 
 
-%HOW TO READ A TXT FILE
-%======================
-% fid = fopen('Test.txt')
-% tline = fgetl(fid)
-% C = textscan(tline, '%s %s') %The delimiter by default is white space.
-% fclose('all')
+
 
 
 

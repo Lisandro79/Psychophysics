@@ -87,10 +87,10 @@ try
     disp(Exp.ExpTotalDuration)
 %     ListenChar('1');
 
-catch %ME1 
+catch ME1 
     sca;
-%     rethrow(ME1);
-    rethrow(psychlasterror);
+    rethrow(ME1);
+%     rethrow(psychlasterror);
 end
 
 
