@@ -1,0 +1,15 @@
+git init 
+git remote add origin "repository name"
+git pull origin master
+
+
+git status
+git log
+git add "filenames"
+git rm "filenames"
+git commit [-a "all files"] "filenames"
+git push 
+git pull
+
+
+
