@@ -1,7 +1,10 @@
 git init 
 git remote add origin "repository name"
 git pull origin master
-
+git config --global user.name "Alessio Fracasso"
+git config --global user.email "alessio.fracasso@gmail.com"
+git config get --global user.name [how to recover user name]
+git config get --global user.email [how to recover user email]
 
 git status
 git log
@@ -10,6 +13,13 @@ git rm "filenames"
 git commit [-a "all files"] "filenames"
 git push 
 git pull
+git checkout "filename
+git diff"
 
+working directory	    staging area	       local git repo		remote git repo (git hub)
+		  git add->             git commit ->               git push ->
 
-
+vim: 
+esc _ insert text mode 
+:w! _ write mode, write the comment
+:q _ exit
