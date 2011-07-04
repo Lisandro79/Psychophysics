@@ -1,4 +1,6 @@
-The most useful crash tutorial for beginners: http://www.ralfebert.de/tutorials/git/ 
+:The most useful crash tutorial for beginners: http://www.ralfebert.de/tutorials/git/ 
+Lots of stuff on git:
+http://book.git-scm.com/
 
 git init 
 git remote add origin "repository name"
@@ -33,7 +35,7 @@ git pull
 working directory	    staging area	       local git repo		remote git repo (git hub)
 		  git add->             git commit ->               git push ->
 
-vim: 
+Important commands for vim: 
 esc _ insert text mode 
 :w! _ write mode, write the comment
 :q _ exit
