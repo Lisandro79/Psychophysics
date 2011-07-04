@@ -1,7 +1,12 @@
-function printPsychtoolboxScreen (win, name)
+function printPsychtoolboxScreen (win, name, outDir)
 
-outDir= '/home/lisandro/Desktop/';
-% name= 'BlankScreen';
+% Take a snapshot of the actual psychtoolbox scren and save on disk
+
+% win: pointer to onscreen psychtoolbox
+% name: choose a name to save the file
+% outDir: path where the image is saved
+
+%outDir= '/home/lisandro/Desktop/';
 
 A=Screen('GetImage' , win);
 fig= figure();
@@ -11,7 +16,6 @@ imshow(A);
 Screen('Close', win)
 print(fig,'-dpng','-loose', [outDir name])
 WaitSecs(0.5)
-% return
 
 % close(fig)
-% WaitSecs(0.5)
+
