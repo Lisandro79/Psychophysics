@@ -1,4 +1,4 @@
-function Exp = Leonidas (inFileName, Exp) %#ok inFileName is Used with eval
+function Exp = Psychophysics (inFileName, Exp) %#ok inFileName is Used with eval
 
 
 % Explain the main purpose of Leonidas: Flexibility and fast building of
