@@ -1,7 +1,16 @@
-:The most useful crash tutorial for beginners: http://www.ralfebert.de/tutorials/git/ 
-Lots of stuff on git:
-http://book.git-scm.com/
+TUTORIALS:
 
+GitMagic: 	http://www-cs-students.stanford.edu/~blynn/gitmagic/index.html
+		http://www.ralfebert.de/tutorials/git/ 
+Lots of stuff on git:
+		http://book.git-scm.com/
+		http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html
+
+# Asking for help
+man git-log
+git help functionName
+
+# Configuring git
 git init 
 git remote add origin "repository name"
 git pull origin master
@@ -11,25 +20,56 @@ git config get --global user.name [how to recover user name]
 git config get --global user.email [how to recover user email]
 git --version
 
-
+# Status
 git status
 git log
+
+ # Adding, deleting, renaming
 git add "filenames"
 git rm "filenames"
-git commit [-a "all files"] "filenames"
-git checkout "filename"  	# from the staging area to the working tree
+git rm -r incriminating/evidence/
+git mv bug.c feature.c		# renames bug.c to feature.c
+
+# Travelling in time
+git checkout SHA1		# travel in time to that commit
+git checkout :/"My first b"
+git checkout master		# back to the present commit
+git checkout master~5
+
+git reset -hard SHA1		# to restore the state to a given commit and ERASE all newer commits from the record permanently
 git reset HEAD "filename"	# from the commit (last or another) to the staging area
-git revert			# to revert some changes that have already been committed
+
+git revert sha1			# to revert some changes that have already been committed. The revert is saved a a new commit up in the history. See log
+
+# Assessing differences
 git show 32kasih		# To see the difference from one commit compared to its parent 
 git diff a2a1eb3..068b9b9	# To compare two specific commits, use git diff <commit_from>..<commit_to>
 git log -p			# To see the diffs for the complete history, use git log -p
-git revert
 
-git branch
+git commit [-a "all files"] "filenames"
+
+# Branching & Merging
+git branch			# list all branches
+git branch newBranch		# create a branch
+git branch -b newBranch		# Create and switch to a branch to work in.
+git branch -d branchName	# Deletes branchName
+git branch -m master part2	# renames mater to part2	
+
+git cherry-pick branchHead	# ???
 git merge
 
+
+$ git stash			# This saves the current state in a temporary location (a stash) and restores the previous state. Your working directory appears 					exactly as it was before you started editing, and you can fix bugs, pull in upstream changes, and so on. 
+
+When you want to go back to the stashed state, type:
+
+$ git stash apply  		# You may need to resolve some conflicts.
+
+
+# Comunication with another Repository
 git push 
-git pull
+git pull			# Fetch + merge from the central repository
+
 
 
 working directory	    staging area	       local git repo		remote git repo (git hub)
@@ -39,3 +79,7 @@ Important commands for vim:
 esc _ insert text mode 
 :w! _ write mode, write the comment
 :q _ exit
+
+
+
+
