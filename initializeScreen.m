@@ -121,7 +121,7 @@ else
 
     % Set up alpha-blending for smooth (anti-aliased) drawing of dots:
     % colorMaskNew= [1 1 1 1]; %Check this
-    Screen('BlendFunction', Exp.Cfg.win, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+%     Screen('BlendFunction', Exp.Cfg.win, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
 end
 
