@@ -1,18 +1,18 @@
 function out = analysisEyeMovements(filename,triggers)
+
 % input: 
 %     filename: ascii eyelink output
 %     triggers: cell array with the first two strings: start & end trial triggers
-%               then add the further triggers needed;
+%               further triggers are added subsequently;
 % output:
 %     structure 'out' with fields:
 %           saccadeDataFrame: trials x saccades x saccades information  
 %           triggers: trials x triggers onset times
-%           triggersName: trials x trigger name excluding sart and end triggers
+%           triggersName: trials x trigger name excluding start and end triggers
 % EXAMPLE CALL:
 % filename = '11.asc';
 % triggers = [{'startTrial'} {'endTrial'} {'reqSaccade'} {'line'}];
 % out = analysisEyeMovements(filename,triggers);
-
 
 
 startTrialLine = triggers{1};
@@ -30,15 +30,17 @@ while 1
     %     if trialID <= size(startTimeCorrect,2)
     if ~isempty(strfind(tline,startTrialLine))
         string = textscan(tline,'%s %n %s %n %n %s');
-        triggersStartTrial(trialID,1) = string{2};
+        triggersStartTrial(trialID,1) = string{2}; 
         while isempty(strfind(tline,endTrialLine))
             tline = fgetl(fid);
             if ~isempty(strfind(tline,'ESACC'))
                 flagSaccade = 1;
                 string = textscan(tline,'%s %s %n %n %n %n %n %n %n %n %n');
                 nSaccades = nSaccades + 1;
+                
+                % COLLECT DATA
                 if ~isempty(string{10})
-                    saccadeDataFrame(trialID,nSaccades,1) = string{10};% amplitude
+                    saccadeDataFrame(trialID,nSaccades,1) = string{10};%#ok<*AGROW> % amplitude
                 else
                     saccadeDataFrame(trialID,nSaccades,1) = 0;% amplitude
                 end
@@ -83,25 +85,30 @@ while 1
                     saccadeDataFrame(trialID,nSaccades,9) = 0; % esacc start y position
                 end
             end
+            
+            % COLLECT TRIGGER ONSETS AND TRIGGER NAMES
             for x = 1:nExtraTriggers
                 triggersCounter = x+2;
                 if ~isempty(strfind(tline,triggers{triggersCounter}))
                     string = textscan(tline,'%s %n %s %n %s');
                     triggersOnset(trialID,x) = string{2};
-                    triggersName{trialID,x} = string{5};
+                    triggersName(trialID,x) = string{5};                    
                 end
             end
-            triggersCounter = 0;
+%             triggersCounter = 0;
         end
         
+          
         % Sort triggers by onset time
-%         [~, idxs]= sort ( triggersOnset(triggersOnset(trialID,:) > 0) )
-%         triggersName{trialID,:}= triggersName{trialID}(trialID,idxs) 
+        [~, idxs]= sort ( triggersOnset(triggersOnset(trialID,:) > 0) );
+        triggersName(trialID, 1:length(idxs))= triggersName(trialID,idxs) ;
         
         
         string = textscan(tline,'%s %n %s %n %n %s');
-        triggersEndTrial(trialID,1) = string{2};        
-        if flagSaccade == 0 % in case no saccades are pefrormed during the trial, then pad the trial matrix qith zeroes;
+        triggersEndTrial(trialID,1) = string{2}; 
+        % In case no saccades are pefrormed during the trial, 
+        % then pad the trial matrix qith zeroes;
+        if flagSaccade == 0 
             saccadeDataFrame(trialID,:,:) = 0;
         end
         output(trialID,1) = trialID; %trialCounter
@@ -109,7 +116,7 @@ while 1
         trialID = trialID + 1;
         flagSaccade = 0;
     end
-    %     end
+   
 end
 fclose(fid);
 
