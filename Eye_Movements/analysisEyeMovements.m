@@ -31,6 +31,7 @@ while 1
     if ~isempty(strfind(tline,startTrialLine))
         string = textscan(tline,'%s %n %s %n %n %s');
         triggersStartTrial(trialID,1) = string{2}; 
+        triggersTrialNumber(trialID,1) = string{4};
         while isempty(strfind(tline,endTrialLine))
             tline = fgetl(fid);
             if ~isempty(strfind(tline,'ESACC'))
@@ -122,9 +123,9 @@ fclose(fid);
 
 out.saccadeDataFrame = saccadeDataFrame;
 if nExtraTriggers > 0
-    triggersOnset = cat(2,triggersStartTrial,triggersEndTrial,triggersOnset);
+    triggersOnset = cat(2,triggersStartTrial,triggersEndTrial,triggersTrialNumber,triggersOnset);
 else
-    triggersOnset = cat(2,triggersStartTrial,triggersEndTrial);
+    triggersOnset = cat(2,triggersStartTrial,triggersEndTrial,triggersTrialNumber);
 end
 out.triggers = triggersOnset;
 out.triggersName = triggersName;
