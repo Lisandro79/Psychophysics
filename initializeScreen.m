@@ -6,7 +6,7 @@ function Exp = initializeScreen (Exp)
 if ~isfield(Exp.Cfg, 'SkipSyncTest'), Exp.Cfg.SkipSyncTest = 0; else end;
 if ~isfield(Exp.Cfg, 'AuxBuffers'), Exp.Cfg.AuxBuffers = 1; else end;
 if ~isfield(Exp.Cfg, 'WinSize'), Exp.Cfg.WinSize = []; else end; % full screen
-if ~isfield(Exp.Cfg, 'WinColor'), Exp.Cfg.WinColor = []; else end; % gray background 
+if ~isfield(Exp.Cfg, 'WinColor'), Exp.Cfg.WinColor = []; else end; % gray background
 % STEREOMODE
 % 0 == No stereo mode, just a single window
 % 6-9 == Different modes of anaglyph stereo for color filter glasses:
@@ -55,45 +55,45 @@ if Exp.Cfg.stereoMode==0 %No stereo mode, one display only
     
     % Set up alpha-blending for smooth (anti-aliased) drawing of dots:
     Screen('BlendFunction', Exp.Cfg.win, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    
 else
     % Open double-buffered onscreen window with the requested stereo mode,
     % setup imaging pipeline for additional on-the-fly processing:
-
+    
     % Prepare pipeline for configuration. This marks the start of a list of
     % requirements/tasks to be met/executed in the pipeline:
     PsychImaging('PrepareConfiguration');
-
+    
     % ADD STEREOMODE CONFIGURATIONS
     % Ask to restrict stimulus processing to some subarea (ROI) of the
     % display. This will only generate the stimulus in the selected ROI and
     % display the background color in all remaining areas, thereby saving
     % some computation time for pixel processing: We select the center
     % 512x512 pixel area of the screen:
-%     PsychImaging('AddTask', 'AllViews', 'RestrictProcessing', CenterRect([0 0 512 512], Screen('Rect', Exp.Cfg.screenNumber)));
-%     PsychImaging('AddTask', 'General', 'UseVirtualFramebuffer');
-%     PsychImaging('AddTask', 'General', 'UseFastOffscreenWindows');
-%     PsychImaging('AddTask', 'General', 'FloatingPoint32BitIfPossible');
-    PsychImaging('AddTask', 'FinalFormatting', 'DisplayColorCorrection', 'SimpleGamma');    
-    % Normalize color 
-%     PsychImaging('AddTask', 'General', 'NormalizedHighresColorRange');
-%     Exp.Cfg.Color.white= Exp.Cfg.Color.white;
-%     Exp.Cfg.Color.black= Exp.Cfg.Color.black;
-%     Exp.Cfg.Color.gray= Exp.Cfg.Color.gray;
-%     Exp.Cfg.Color.inc= Exp.Cfg.Color.inc;
-%     Exp.Cfg.WinColor= Exp.Cfg.WinColor;
+    %     PsychImaging('AddTask', 'AllViews', 'RestrictProcessing', CenterRect([0 0 512 512], Screen('Rect', Exp.Cfg.screenNumber)));
+    %     PsychImaging('AddTask', 'General', 'UseVirtualFramebuffer');
+    %     PsychImaging('AddTask', 'General', 'UseFastOffscreenWindows');
+    %     PsychImaging('AddTask', 'General', 'FloatingPoint32BitIfPossible');
+    PsychImaging('AddTask', 'FinalFormatting', 'DisplayColorCorrection', 'SimpleGamma');
+    % Normalize color
+    %     PsychImaging('AddTask', 'General', 'NormalizedHighresColorRange');
+    %     Exp.Cfg.Color.white= Exp.Cfg.Color.white;
+    %     Exp.Cfg.Color.black= Exp.Cfg.Color.black;
+    %     Exp.Cfg.Color.gray= Exp.Cfg.Color.gray;
+    %     Exp.Cfg.Color.inc= Exp.Cfg.Color.inc;
+    %     Exp.Cfg.WinColor= Exp.Cfg.WinColor;
     
     % Consolidate the list of requirements (error checking etc.), open a
     % suitable onscreen window and configure the imaging pipeline for that
     % window according to our specs. The syntax is the same as for
     % Screen('OpenWindow'):
-%     rval = kPsychNeedFastOffscreenWindows; 
+    %     rval = kPsychNeedFastOffscreenWindows;
     rval = [];
     [Exp.Cfg.win, Exp.Cfg.windowRect]=PsychImaging('OpenWindow', Exp.Cfg.screenNumber, Exp.Cfg.WinColor, Exp.Cfg.WinSize, [], [], Exp.Cfg.stereoMode, [], rval);
     [Exp.Cfg.centerX ,Exp.Cfg.centerY] = RectCenter(Exp.Cfg.windowRect);
     % Apply gamma correction to the open window
     PsychColorCorrection('SetEncodingGamma', Exp.Cfg.win, 1, 'AllViews');
-
+    
     % SET COLOR GAINS. This depends on the anaglyph mode selected. The
     % values set here as default need to be fine-tuned for any specific
     % combination of display device, color filter glasses and (probably)
@@ -118,10 +118,10 @@ else
                 error('Unknown Exp.Cfg.stereoMode specified.');
         end
     end
-
+    
     % Set up alpha-blending for smooth (anti-aliased) drawing of dots:
     % colorMaskNew= [1 1 1 1]; %Check this
-%     Screen('BlendFunction', Exp.Cfg.win, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    %     Screen('BlendFunction', Exp.Cfg.win, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
 end
 
@@ -151,6 +151,35 @@ Exp.Cfg.pixelsPerDegree= mean([Exp.Cfg.visualAnglePixelPerDegX Exp.Cfg.visualAng
 Screen('TextSize', Exp.Cfg.win , 25);
 % Screen(Exp.Cfg.win,'TextFont', 'TimesNewRoman');
 
-% Screen('DrawText', Exp.Cfg.win, '7',Exp.Cfg.centerX-5, Exp.Cfg.centerY-10,1);
+% KbName('UnifyKeyNames');
 
+if Exp.Cfg.computer.linux == 1 || Exp.Cfg.computer.windows == 1
+    
+    %% IF RUNNING IN WINDOWS OR WINDOWS EMULATION FROM A WINDOWS/MAC MACHINE
+    Exp.addParams.escapeKey = 'esc';
+    Exp.addParams.upKey = 'up'; %38 in Windows, 82 in MAC
+    Exp.addParams.downKey = 'down'; %40 in Windows, 81 in MAC
+    Exp.addParams.exitKey = 'o'; %88 in Windows, 67 in MAC
+    Exp.addParams.responseKey = 'space';
+    
+elseif Exp.Cfg.computer.osx == 1
+    %%%IF RUNNING IN MAC FROM A MAC MACHINE
+    %         Exp.addParams.escapeKey = KbName('ESCAPE');
+    %         Exp.addParams.responseKey = KbName('Space');
+    %         Exp.addParams.upKey = KbName('UpArrow'); %38 in Windows, 82 in MAC
+    %         Exp.addParams.downKey = KbName('DownArrow'); %40 in Windows, 81 in MAC
+    %         Exp.addParams.leftKey = Kbname('LeftArrow');
+    %         Exp.addParams.rightKey = Kbname('RightArrow');
+    %         Exp.addParams.exitKey = KbName('x'); %88 in Windows, 67 in MAC
+    
+    Exp.addParams.escapeKey = 'ESCAPE';
+    Exp.addParams.responseKey = 'Space';
+    Exp.addParams.upKey = 'UpArrow'; %38 in Windows, 82 in MAC
+    Exp.addParams.downKey = 'DownArrow'; %40 in Windows, 81 in MAC
+    Exp.addParams.leftKey = 'LeftArrow';
+    Exp.addParams.rightKey = 'RightArrow';
+    Exp.addParams.exitKey = 'x'; %88 in Windows, 67 in MAC
+    Exp.addParams.message='Calibration: Try to fixate on the points as they appear';
+    
+end
 

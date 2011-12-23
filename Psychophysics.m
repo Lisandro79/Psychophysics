@@ -39,6 +39,7 @@ try
         vbl= Screen('Flip', Exp.Cfg.win, [], Exp.Cfg.AuxBuffers);
     end    
     
+    
     % SHOW TRIAL FUNCTIONS
     for m=1:length(Exp.Trial)
         %READ WHAT FUNCTION TO USE FOR EACH TRIAL
@@ -49,6 +50,7 @@ try
         %TO ABORT THE PROGRAM PRESS 'Q'
         if (strcmp(Exp.Trial(m).ActualResponse, Exp.addParams.exitKey)),break; end;
     end
+    
     %% SAVE RESULTS
     endTime = GetSecs;
     Exp.ExpTotalDuration = endTime - Exp.Cfg.ExperimentStart;
