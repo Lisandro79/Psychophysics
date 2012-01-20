@@ -107,7 +107,7 @@ while 1
         
         string = textscan(tline,'%s %n %s %n %n %s');
         triggersEndTrial(trialID,1) = string{2}; 
-        % In case no saccades are pefrormed during the trial, 
+        % In case no saccades are performed during the trial, 
         % then pad the trial matrix qith zeroes;
         if flagSaccade == 0 
             saccadeDataFrame(trialID,:,:) = 0;
