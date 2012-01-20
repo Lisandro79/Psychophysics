@@ -151,7 +151,7 @@ Exp.Cfg.pixelsPerDegree= mean([Exp.Cfg.visualAnglePixelPerDegX Exp.Cfg.visualAng
 Screen('TextSize', Exp.Cfg.win , 25);
 % Screen(Exp.Cfg.win,'TextFont', 'TimesNewRoman');
 
-% KbName('UnifyKeyNames');
+KbName('UnifyKeyNames');
 
 if Exp.Cfg.computer.linux == 1 || Exp.Cfg.computer.windows == 1
     
@@ -161,6 +161,7 @@ if Exp.Cfg.computer.linux == 1 || Exp.Cfg.computer.windows == 1
     Exp.addParams.downKey = 'down'; %40 in Windows, 81 in MAC
     Exp.addParams.exitKey = 'o'; %88 in Windows, 67 in MAC
     Exp.addParams.responseKey = 'space';
+    Exp.addParams.driftCorrection = 'd';
     
 elseif Exp.Cfg.computer.osx == 1
     %%%IF RUNNING IN MAC FROM A MAC MACHINE
@@ -173,13 +174,14 @@ elseif Exp.Cfg.computer.osx == 1
     %         Exp.addParams.exitKey = KbName('x'); %88 in Windows, 67 in MAC
     
     Exp.addParams.escapeKey = 'ESCAPE';
+    Exp.addParams.exitKey = 'o'; %88 in Windows, 67 in MAC
     Exp.addParams.responseKey = 'Space';
     Exp.addParams.upKey = 'UpArrow'; %38 in Windows, 82 in MAC
     Exp.addParams.downKey = 'DownArrow'; %40 in Windows, 81 in MAC
     Exp.addParams.leftKey = 'LeftArrow';
     Exp.addParams.rightKey = 'RightArrow';
-    Exp.addParams.exitKey = 'x'; %88 in Windows, 67 in MAC
+%     Exp.addParams.exitKey = 'x'; %88 in Windows, 67 in MAC
     Exp.addParams.message='Calibration: Try to fixate on the points as they appear';
-    
+    Exp.addParams.driftCorrection = 'd';
 end
 
