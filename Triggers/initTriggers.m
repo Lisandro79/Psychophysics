@@ -9,6 +9,7 @@ function Exp= initTriggers(Exp)
 % dio = digitalio('parallel','LPT1');
 daqhwinfo('parallel');
 Exp.Trigger.dio = digitalio('parallel');
+
 % Add lines -- Add eight output lines from port 0 (line-configurable).
 addline(Exp.Trigger.dio,0:7,'out','Trgs');
 addline(Exp.Trigger.dio,8:9,'in', 'resp');

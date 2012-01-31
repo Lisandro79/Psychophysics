@@ -1,4 +1,4 @@
-function out = analysisEyeMovements(filename,triggers)
+function out = analysisEyeMovements(filename,triggers, eye_used)
 
 % input: 
 %     filename: ascii eyelink output
@@ -29,19 +29,22 @@ while 1
     nSaccades = 0;
     %     if trialID <= size(startTimeCorrect,2)
     if ~isempty(strfind(tline,startTrialLine))
+        
+        sprintf('Trial :  %3.0f', trialID) % Show progress
         string = textscan(tline,'%s %n %s %n %n %s');
         triggersStartTrial(trialID,1) = string{2}; 
         triggersTrialNumber(trialID,1) = string{4};
+        
         while isempty(strfind(tline,endTrialLine))
             tline = fgetl(fid);
-            if ~isempty(strfind(tline,'ESACC'))
+            if ~isempty(strfind(tline,['ESACC ' eye_used]))
                 flagSaccade = 1;
                 string = textscan(tline,'%s %s %n %n %n %n %n %n %n %n %n');
                 nSaccades = nSaccades + 1;
                 
                 % COLLECT DATA
                 if ~isempty(string{10})
-                    saccadeDataFrame(trialID,nSaccades,1) = string{10};%#ok<*AGROW> % amplitude
+                    saccadeDataFrame(trialID,nSaccades,1) = string{10};%#ok<*AGROW> % amplitude in degrees
                 else
                     saccadeDataFrame(trialID,nSaccades,1) = 0;% amplitude
                 end
@@ -101,9 +104,10 @@ while 1
         
           
         % Sort triggers by onset time
-        [~, idxs]= sort ( triggersOnset(triggersOnset(trialID,:) > 0) );
-        triggersName(trialID, 1:length(idxs))= triggersName(trialID,idxs) ;
-        
+        if nExtraTriggers > 0
+            [~, idxs]= sort ( triggersOnset(triggersOnset(trialID,:) > 0) );
+            triggersName(trialID, 1:length(idxs))= triggersName(trialID,idxs) ;
+        end
         
         string = textscan(tline,'%s %n %s %n %n %s');
         triggersEndTrial(trialID,1) = string{2}; 
@@ -124,9 +128,10 @@ fclose(fid);
 out.saccadeDataFrame = saccadeDataFrame;
 if nExtraTriggers > 0
     triggersOnset = cat(2,triggersStartTrial,triggersEndTrial,triggersTrialNumber,triggersOnset);
+    out.triggersName = triggersName;
 else
     triggersOnset = cat(2,triggersStartTrial,triggersEndTrial,triggersTrialNumber);
 end
 out.triggers = triggersOnset;
-out.triggersName = triggersName;
+
 
