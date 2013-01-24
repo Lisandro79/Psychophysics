@@ -61,6 +61,9 @@ try
             triggersStartTrial(trialID, 1) = string{2};
             triggersTrialNumber(trialID, 1) = string{4};
             
+            tr_event = {};
+            tr_ev_counter = 1;
+            
             % SEARCH UNTIL WE REACH THE TRIGGER THAT ENDS THE TRIAL
             while (1)
                 
@@ -97,7 +100,7 @@ try
                     tr_line = tr_line + 1;
                 end
                 
-                
+                               
                 % COLLECT FIXATIONS
                 if ~isempty(strfind(tline, ['EFIX ' eye_used]))
                     
@@ -168,19 +171,47 @@ try
                     end
                 end
                 
+                
+                
+                 % Collect the sequence of events 
+                 if ~isempty(strfind(tline, ['EFIX ' eye_used])) || ~isempty(strfind(tline, ['SFIX ' eye_used])) || ...
+                         ~isempty(strfind(tline, ['ESACC ' eye_used])) || ~isempty(strfind(tline, ['SSACC ' eye_used])) || ...
+                         ~isempty(strfind(tline, ['EBLINK ' eye_used])) || ~isempty(strfind(tline, ['SBLINK ' eye_used]))  || ...
+                         ~isempty(strfind(tline, endTrialLine))
+                    
+                    string = textscan(tline,'%s');
+                    tr_event{tr_ev_counter} = string{1};
+                    tr_ev_counter = tr_ev_counter + 1;
+                    
+%                     tr_event_data{tr_ev_counter} = [];                 
+%                     % collect the info for the end of saccade
+%                     if isempty(strfind(tline, ['ESACC ' eye_used])) 
+%                         string = textscan(tline,'%s %s %n %n %n %n %n %n %n %n %n');
+%                         tr_event_data{tr_ev_counter} = string;
+%                     end
+                    
+                end
+                
                 % END OF TRIAL: COLLECT LAST FIXATION (only for the experiment
                 % here)
                 if ~isempty(strfind(tline, endTrialLine))
                     
-                    nEvents = nEvents + 1;
-                    dur = 1000; % we can only assign a ficticious value here. In ms
-                    dataFrame(trialID, nEvents, 1) = timing (end, 2) - dur; %#ok<*AGROW> onset time
-                    dataFrame(trialID, nEvents, 2) = timing (end, 2); % offset time
-                    dataFrame(trialID, nEvents, 3) = dur;
-                    dataFrame(trialID, nEvents, 4) = timing (end, 3); % average x position
-                    dataFrame(trialID, nEvents, 5) = timing (end, 4); % average y position
-                    dataFrame(trialID, nEvents, 6) = timing (end, 5); % pupil size
-                    break;
+                   if length(tr_event) >= 2 % Check that there are enough events
+                        if strcmp( 'SFIX', tr_event{end-1}{1}) % and that the last event before ending the trial was an ongoing fixation
+                            
+                            nEvents = nEvents + 1;
+                            dataFrame(trialID, nEvents, 1) = str2double(tr_event{end-2}{4}); %#ok<*AGROW> onset time
+                            dataFrame(trialID, nEvents, 2) = str2double(tr_event{end}{2}); % offset time
+                            dataFrame(trialID, nEvents, 3) = dataFrame(trialID, nEvents, 2) - dataFrame(trialID, nEvents, 1);
+                            %  x position -when the saccade ended, not the
+                            %  average as before-
+                            dataFrame(trialID, nEvents, 4) = str2double(tr_event{end-2}{8}); 
+                            dataFrame(trialID, nEvents, 5) = str2double(tr_event{end-2}{9}); 
+                            dataFrame(trialID, nEvents, 6) = nan; % there is no info for pupil size
+                        end
+                    end
+                    
+                    break; % go to next trial
                 end
                 
             end

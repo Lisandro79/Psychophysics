@@ -33,7 +33,7 @@ while 1
         sprintf('Trial :  %3.0f', trialID) % Show progress
         string = textscan(tline,'%s %n %s %n %n %s');
         triggersStartTrial(trialID,1) = string{2}; 
-        triggersTrialNumber(trialID,1) = string{4};
+        triggersTrialNumber(trialID,1) = trialID; % string{4};
         
         while isempty(strfind(tline,endTrialLine))
             tline = fgetl(fid);

@@ -38,7 +38,7 @@ end
 EyelinkDoTrackerSetup(Exp.eyelink);
 
 % Do a final check of calibration using driftcorrection
-% EyelinkDoDriftCorrection(Exp.eyelink);
+EyelinkDoDriftCorrection(Exp.eyelink);
 
 
 % SET UP TRACKER CONFIGURATION

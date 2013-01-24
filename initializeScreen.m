@@ -48,6 +48,8 @@ end
 [x y]=Screen('DisplaySize',Exp.Cfg.screenNumber);
 Exp.Cfg.xDimCm=x/10;
 Exp.Cfg.yDimCm=y/10;
+
+
 %% OPEN A WINDOW DEPENDING ON THE STEREO MODE
 if Exp.Cfg.stereoMode==0 %No stereo mode, one display only
     [Exp.Cfg.win Exp.Cfg.windowRect]= Screen('OpenWindow', 0 , Exp.Cfg.WinColor, Exp.Cfg.WinSize, [], 2, 0);
@@ -159,6 +161,8 @@ if Exp.Cfg.computer.linux == 1 || Exp.Cfg.computer.windows == 1
     Exp.addParams.escapeKey = 'esc';
     Exp.addParams.upKey = 'up'; %38 in Windows, 82 in MAC
     Exp.addParams.downKey = 'down'; %40 in Windows, 81 in MAC
+    Exp.addParams.leftKey = 'left';
+    Exp.addParams.rightKey = 'right';
     Exp.addParams.exitKey = 'o'; %88 in Windows, 67 in MAC
     Exp.addParams.responseKey = 'space';
     Exp.addParams.driftCorrection = 'd';
